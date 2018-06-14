@@ -15,7 +15,6 @@
      - name: docker
      - name: tomcat
 #     - name: sqlDeveloper
-     - name: certificates
      - name: soapui
      - name: chrome
      - name: atom

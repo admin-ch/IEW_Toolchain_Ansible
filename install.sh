@@ -12,7 +12,7 @@ execut_jeap () {
     git fetch
     git pull
     echo '###Excute ansible ...'
-    ansible-playbook playbook.yml --connection=local -become-method=sudo   --extra-vars "ansible_sudo_pass=secret"
+    ansible-playbook  playbook.yml --connection=local -become-method=sudo   --extra-vars "ansible_sudo_pass=secret"
 }
 
 install_and_configure_git() {
@@ -81,7 +81,7 @@ then
   install_and_configure_git
   execut_jeap
 else
-  echo '###Ansible is currently not install  ...'
+  echo '###Ansible is currently not install  ...'ok
  install_and_configure_ansible
  install_and_configure_git
  execut_jeap
