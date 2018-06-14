@@ -5,24 +5,24 @@
     docker_users: ['deploy']
 
   roles:
-#     - name: proxy
-#     - name: java
-#     - name: maven
-#     - name: intellij
-#     - name: nodejs
-#     - name: angular-cli
-#     - name: curl
-#     - name: docker
-#     - name: tomcat
-     - name: sqlDeveloper
-#     - name: certificates
-#     - name: soapui
-#     - name: chrome
-#     - name: atom
-#     - name: kitematic
-#     - name: desktop-preferences
-#     - name: desktop-cleanup
-#     - name: wallpaper
+     - name: proxy
+     - name: java
+     - name: maven
+     - name: intellij
+     - name: nodejs
+     - name: angular-cli
+     - name: curl
+     - name: docker
+     - name: tomcat
+#     - name: sqlDeveloper
+     - name: certificates
+     - name: soapui
+     - name: chrome
+     - name: atom
+     - name: kitematic
+     - name: desktop-preferences
+     - name: desktop-cleanup
+     - name: wallpaper
 
 #  tasks:
 #    - name: Reboot ubuntu
