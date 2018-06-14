@@ -1,0 +1,123 @@
+
+- name: Find latest version
+  uri:
+    url: "https://data.services.jetbrains.com/products/releases?code=IIU&latest=true&type=release"
+    return_content: yes
+    validate_certs: no
+    body_format: json
+  register: intellij_releases_response
+
+- set_fact:
+    intellij_url: "{{ intellij_releases_response.json.IIU.0.downloads.linux.link }}"
+
+- set_fact:
+    intellij_version: "{{ intellij_releases_response.json.IIU.0.version }}"
+
+- set_fact:
+    intellij_build: "{{intellij_releases_response.json.IIU.0.build}}"
+
+- name: Wat
+  debug: msg={{intellij_url}}
+
+- name: Ensure presence of opt
+  file: path={{global_vars.home_path}}/ide state=directory owner=dev group=dev mode=0755
+
+- name: Download intellij
+  get_url: url={{intellij_url}} dest={{global_vars.home_path}}/ide/idea_{{intellij_version}}.archive
+  register: intellij_out
+
+# show the content of intellij_out var
+- debug: var=intellij_out
+
+- name: Unarchive intellij tar
+  unarchive:
+    copy: no
+    src: "{{global_vars.home_path}}/ide/idea_{{intellij_version}}.archive"
+    dest: "{{global_vars.home_path}}/ide"
+    creates: "{{global_vars.home_path}}/ide/idea-IU-{{intellij_build}}"
+    owner: '{{ global_vars.user_session }}'
+    group: '{{ global_vars.user_session }}'
+    mode: 0755
+
+- set_fact:
+   intellij_home: "{{global_vars.home_path}}/ide/idea-IU-{{intellij_build}}"
+
+- set_fact:
+   intellij_archive: "{{global_vars.home_path}}/ide/idea_{{intellij_version}}.archive"
+
+- name: Clean up
+  file: state=absent path={{intellij_archive}}
+
+- name: Wat
+  debug: msg={{intellij_home}}
+
+- name: Retreive intellij dir name
+  command: ls -t {{intellij_home}}
+  register: result_intellij_folder_name
+  tags: ["configuration","intellij"]
+
+- name: Give rights
+  file: dest={{intellij_home}} owner=root group=dev owner=dev mode=0755 recurse=yes
+
+- name: Ensure intellij is configured
+  template: src=idea.properties.j2 dest={{intellij_home}}/bin/idea.properties
+  tags: ["configuration","intellij"]
+
+- name: Ensure intellij bin exist
+  template: src=intellij.j2 dest=/usr/bin/intellij mode=755
+  become: true
+  tags: ["configuration","intellij"]
+
+- name: Ensure intellij shortcut is present
+  template: src=intellij.desktop.j2 dest=/usr/share/applications/intellij.desktop
+  tags: ["configuration","intellij"]
+
+- stat:
+    path: "{{projects_folder}}"
+  register: p
+- debug:
+    msg: "Projects folder exists and is a directory"
+  when: p.stat.isdir is defined and p.stat.isdir
+
+- name: Creates projects idea directory if not exite
+  file:
+    path: "{{projects_folder}}"
+    state: directory
+    group: '{{ global_vars.user_session }}'
+    owner: '{{ global_vars.user_session }}'
+  when: p.stat.isdir is not defined
+
+- name: Ensure presence of .IdeaCOnfiguration
+  file: path={{intellij_default_option_dir}}/options state=directory group=dev owner=dev mode=755
+
+- name: Set the default Port for Intellij
+  template: src=port dest={{intellij_default_option_dir}} group=dev owner=dev mode=755
+  tags: ["configuration","intellij"]
+
+- name: Set the default Theme for Intellij
+  template: src=colors.scheme.xml  dest={{intellij_default_option_dir}}/options group=dev owner=dev mode=755
+  tags: ["configuration","intellij"]
+
+- name: Set the default Proxy for Intellij
+  template: src=proxy.settings.xml  dest={{intellij_default_option_dir}}/options group=dev owner=dev mode=755
+  when: global_vars.enable_proxy
+
+- name: Set the default JDK for Intellij
+  template: src=jdk.table.xml dest={{intellij_default_option_dir}}/options group=dev owner=dev mode=755
+  tags: ["configuration","intellij"]
+
+
+
+- name: Rename default cacert to cacert_old
+  command: mv  {{intellij_home}}/jre64/lib/security/cacerts {{intellij_home}}/jre64/lib/security/cacerts_old
+  when: global_vars.enable_proxy
+
+- name: Replace default Cacert file to bit version
+  copy:
+    src:   certificates/cacerts
+    dest: '{{intellij_home}}/jre64/lib/security'
+    owner: '{{ global_vars.user_session }}'
+    group: '{{ global_vars.user_session }}'
+    mode: 0755
+    backup: yes
+  when: global_vars.enable_proxy

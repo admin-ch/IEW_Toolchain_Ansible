@@ -1,0 +1,43 @@
+---
+- name: Install cURL on Homebrew (Mac OSX) systems
+  homebrew:
+    name: curl
+    state: "{{ 'latest' if curl_pkg_state_latest else 'present' }}"
+    update_homebrew: "{{ curl_update_pkg_mgr }}"
+  when: ansible_os_family == 'Darwin'
+
+- name: Install cURL on Debian-flavours
+  apt:
+    name: curl
+    state: "{{ 'latest' if curl_pkg_state_latest else 'present' }}"
+    update_cache: "{{ curl_update_pkg_mgr }}"
+  when: ansible_pkg_mgr == 'apt'
+
+- name: Install cURL on CentOS-flavours
+  yum:
+    name: curl
+    state: "{{ 'latest' if curl_pkg_state_latest else 'present' }}"
+    update_cache: "{{ curl_update_pkg_mgr }}"
+  when: ansible_pkg_mgr == 'yum'
+
+- name: Install cURL via Zypper
+  zypper:
+    name: curl
+    state: "{{ 'latest' if curl_pkg_state_latest else 'present' }}"
+    update_cache: "{{ curl_update_pkg_mgr }}"
+  when: ansible_pkg_mgr == 'zypper'
+
+- name: Install cURL via pacman
+  pacman:
+    name: curl
+    state: "{{ 'latest' if curl_pkg_state_latest else 'present' }}"
+    update_cache: "{{ curl_update_pkg_mgr }}"
+  when: ansible_pkg_mgr == 'pacman'
+
+- name: Install cURL via Portage
+  portage:
+    name: curl
+    state: "{{ 'latest' if curl_pkg_state_latest else 'present' }}"
+    update_cache: "{{ curl_update_pkg_mgr }}"
+  when: ansible_pkg_mgr == 'portage'
+...

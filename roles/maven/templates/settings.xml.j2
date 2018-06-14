@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+            <mirrors>
+                        <mirror>
+                                   <id>bit-nexus</id>
+                                   <url>https://repo.bit.admin.ch/repository/maven-public/</url>
+                                   <mirrorOf>*</mirrorOf>
+                        </mirror>
+            </mirrors>
+
+            <profiles>
+                        <profile>
+                                   <id>bit-profile</id>
+                                   <activation>
+                                               <activeByDefault>true</activeByDefault>
+                                   </activation>
+                                   <properties>
+                                               <http_proxy>${env.http_proxy}</http_proxy>
+                                               <https_proxy>${env.https_proxy}</https_proxy>
+                                               <no_proxy>${env.no_proxy}</no_proxy>
+                                   </properties>
+                                   <repositories>
+                                               <repository>
+                                                           <id>central</id>
+                                                           <name>Nexus Managed Repository</name>
+                                                           <url>https://repo.bit.admin.ch/repository/maven-public/</url>
+                                                           <releases>
+                                                                       <enabled>true</enabled>
+                                                           </releases>
+                                                           <snapshots>
+                                                                       <enabled>true</enabled>
+                                                           </snapshots>
+                                               </repository>
+                                   </repositories>
+                                   <pluginRepositories>
+                                               <pluginRepository>
+                                                           <id>central</id>
+                                                           <name>Nexus Managed Plugin Repository</name>
+                                                           <url>https://repo.bit.admin.ch/repository/maven-public/</url>
+                                                           <releases>
+                                                                       <enabled>true</enabled>
+                                                           </releases>
+                                                           <snapshots>
+                                                                       <enabled>true</enabled>
+                                                           </snapshots>
+                                               </pluginRepository>
+                                   </pluginRepositories>
+                        </profile>
+
+            </profiles>
+
+</settings>

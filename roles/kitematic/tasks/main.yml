@@ -1,0 +1,17 @@
+---
+  - name: Include global_vars
+    include_vars:
+      file: 'defaults/main.yml'
+      name:  global_vars
+
+  - name: Check if kitematic is installed
+    stat:
+      path: "{{global_vars.home_path}}/kitematic"
+    register: kitematic_present
+
+  - debug:
+      msg: "Java not Installed"
+    when:  kitematic_present.stat.exists
+
+  - import_tasks: tasks/kitematic_install.yml
+    when: not kitematic_present.stat.exists

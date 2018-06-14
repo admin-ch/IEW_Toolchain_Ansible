@@ -1,0 +1,60 @@
+---
+
+  - name: Create JAVA_HOME folder
+    file: state=directory path={{global_vars.home_path}}/java owner=dev group=dev recurse=yes mode=0755
+
+  - name: Download Java from url
+    command: "wget -q -O {{global_vars.home_path}}/java/jdk-linux-x64.tar.gz --no-check-certificate --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' {{global_vars.java_download_url}} creates={{global_vars.home_path}}/java/jdk-linux-x64.tar.gz"
+    register: java_out
+    when:
+
+  # show the content of java_out var
+  - debug: var=java_out
+
+  - name: Fix ownership
+    file: state=directory path={{global_vars.home_path}}/java/jdk{{global_vars.java_version}} owner=dev group=dev recurse=yes
+
+  - name: Unarchive a file that is already on the remote machine
+    unarchive:
+      extra_opts: ['--strip-components=1']
+      src: "{{global_vars.home_path}}/java/jdk-linux-x64.tar.gz"
+      dest: "{{global_vars.home_path}}/java/jdk{{global_vars.java_version}}"
+      copy: no
+      owner: '{{ global_vars.user_session }}'
+      group: '{{ global_vars.user_session }}'
+      mode: 0755
+
+  - name: Clean up
+    file: state=absent path={{global_vars.home_path}}/java/jdk-linux-x64.tar.gz
+
+  - name: Ensure JAVA_HOME to export on .bashrc
+    blockinfile:
+      dest: "/home/dev/.bashrc"
+      block: |
+        export JAVA_HOME={{global_vars.home_path}}/java/jdk{{global_vars.java_version}}
+      marker: '# {mark}  MANAGED BLOCK - exporte Custom Variable'
+      insertbefore: EOF
+      create: yes
+
+  - name: Ensure JAVA_HOME  to export on .profile
+    blockinfile:
+      dest: "/home/dev/.profile"
+      block: |
+       JAVA_HOME="{{global_vars.home_path}}/java/jdk{{global_vars.java_version}}"
+       PATH="$JAVA_HOME/jre/bin:$PATH"
+      marker: '# {mark}  MANAGED BLOCK - exporte JAVA_HOME'
+      insertbefore: EOF
+      create: yes
+
+  - name: Add JAVA_HOME on etc/environment
+    lineinfile:
+        dest: /etc/environment
+        insertafter: EOF
+        line: 'JAVA_HOME={{global_vars.home_path}}/java/jdk{{global_vars.java_version}}'
+    become: yes
+
+
+
+
+
+

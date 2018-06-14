@@ -1,0 +1,22 @@
+---
+
+- name: Download Atom x86_64 package for Debian OS family
+  get_url:
+    url: "https://github.com/atom/atom/releases/download/v{{atom_version}}/atom-amd64.deb"
+    dest: "/var/tmp/atom-{{atom_version}}-x86_64.deb"
+  when:
+    - ansible_os_family == 'Debian'
+    - ansible_architecture == 'x86_64'
+  tags:
+    - atom
+
+- name: Install Atom x86_64 package for Debian OS family
+  apt:
+    deb: "/var/tmp/atom-{{atom_version}}-x86_64.deb"
+  when:
+    - ansible_os_family == 'Debian'
+    - ansible_architecture == 'x86_64'
+  tags:
+    - atom
+
+

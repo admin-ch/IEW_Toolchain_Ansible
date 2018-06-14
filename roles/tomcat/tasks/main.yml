@@ -1,0 +1,17 @@
+---
+  - name: Check if tomact is installed
+    stat:
+      path={{tomcat_dir}}
+    register: tomcat_present
+
+  - debug:
+      msg: "Tomact not Installed"
+    when:  tomcat_present.stat.exists
+
+  - import_tasks: tasks/tomcat_install.yml
+    when: not tomcat_present.stat.exists
+
+
+
+
+

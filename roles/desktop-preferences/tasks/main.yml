@@ -1,0 +1,56 @@
+---
+- name: Include global_vars
+  include_vars:
+    file: 'defaults/main.yml'
+    name:  global_vars
+
+
+
+- name: Enable
+  blockinfile:
+      dest: /etc/gdm3/custom.conf
+      insertafter: '#  AutomaticLogin = user1'
+      block: |
+         AutomaticLoginEnable=True
+         AutomaticLogin=dev
+
+
+
+
+- name: Set global keybindings
+  command: "{{ item }}"
+  with_items:
+    - gsettings set org.gnome.desktop.screensaver lock-enabled false
+    - gsettings set org.gnome.system.proxy use-same-proxy false
+    - gsettings set org.gnome.system.proxy mode 'manual'
+    - gsettings set org.gnome.system.proxy autoconfig-url 'http://proxypac.efd.admin.ch/proxy.pac'
+    - gsettings set org.gnome.system.proxy.http host '{{global_vars.proxy}}'
+    - gsettings set org.gnome.system.proxy.http port 8080
+    - gsettings set org.gnome.system.proxy.http enabled false
+    - gsettings set org.gnome.system.proxy.https host '{{global_vars.proxy}}'
+    - gsettings set org.gnome.system.proxy.https port 8080
+    - gsettings set org.gnome.system.proxy ignore-hosts "['localhost', '127.0.0.0/8', '::1', '.admin.ch']"
+    - gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'google-chrome.desktop', 'firefox.desktop',  'gnome-control-center.desktop', 'org.gnome.Terminal.desktop', 'atom.desktop', 'intellij.desktop', 'sqldeveloper.desktop','soapui.desktop', 'kitematic.desktop']"
+    - gsettings set org.gnome.desktop.screensaver lock-enabled false
+
+    - gsettings set org.gnome.desktop.wm.keybindings cycle-group "[]"
+    - gsettings set org.gnome.desktop.wm.keybindings begin-move "[]"
+    - gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "[]"
+    - gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "[]"
+    - gsettings set org.gnome.desktop.wm.keybindings begin-resize "[]"
+    - gsettings set org.gnome.desktop.input-sources  sources "[('xkb', 'ch'), ('xkb', 'ch+fr')]"
+    - gsettings set org.gnome.desktop.datetime  automatic-timezone true
+    - timedatectl set-timezone Europe/Zurich
+    - gsettings set org.gnome.desktop.lockdown  disable-lock-screen true
+    - gsettings set org.gnome.desktop.screensaver  ubuntu-lock-on-suspend false
+    - gsettings set org.gnome.settings-daemon.plugins.power active false #only for ubuntu 18
+  ignore_errors: yes
+  become: true
+  become_user: '{{ global_vars.user_session }}'
+
+- name: Install some Stuff
+  become: yes
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - dconf-tools
+

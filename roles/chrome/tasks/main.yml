@@ -1,0 +1,18 @@
+---
+- name: Check if chrome is installed
+  shell: dpkg -l | grep -E '^ii' | grep google-chrome-stable
+  register: chrome_installed
+  ignore_errors: yes
+
+- name: Install Chrome
+  include: install.yml
+  when: chrome_installed.rc != 0
+
+- name: Check arch is 64 bits
+  shell: uname -m
+  register: linux_arch
+  ignore_errors: yes
+
+- name: Fix source list file for x64 arch
+  lineinfile: "dest=/etc/apt/sources.list.d/google-chrome.list state=present regexp='^.*http://dl.google.com.*$' line='deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'"
+  when: linux_arch.rc == 0 and linux_arch.stdout == "x86_64"

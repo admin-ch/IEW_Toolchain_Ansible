@@ -1,0 +1,11 @@
+
+# defaults file for oracle-sqldeveloper
+sqlDeveloper_bundle: sqldeveloper-17.4.0.355.2349-no-jre.zip
+
+sqlDeveloper_archive_path: /home/dev/Desktop/jeap-ansible/filesToRemote/sqlDeveloper/{{sqlDeveloper_bundle}}
+
+# Destination path
+sqlDeveloper_install_dir: "/home/dev/development/sqlDeveloper"
+
+# Config Directory
+sqlDeveloper_config_dir: "/home/dev/.sqldeveloper"

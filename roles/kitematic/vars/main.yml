@@ -1,0 +1,2 @@
+kitematic_version: 0.17.3
+kitematic_url: https://github.com/docker/kitematic/releases/download/v{{kitematic_version}}/Kitematic-{{kitematic_version}}-Ubuntu.zip

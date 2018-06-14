@@ -1,0 +1,25 @@
+---
+- name: create kitematic install directory
+  file:
+    dest: "{{global_vars.home_path}}/kitematic"
+    group: '{{ global_vars.user_session }}'
+    owner: '{{ global_vars.user_session }}'
+    mode: 0755
+    state: directory
+
+- name: Download kitematic
+  get_url: url={{kitematic_url}} dest={{global_vars.home_path}}/kitematic
+  register: kitematic_out
+
+- name: Unarchive
+  unarchive:
+    copy: no
+    src: "{{global_vars.home_path}}/kitematic/Kitematic-{{kitematic_version}}-Ubuntu.zip"
+    dest: "{{global_vars.home_path}}/kitematic"
+    group: '{{ global_vars.user_session }}'
+    owner: '{{ global_vars.user_session }}'
+    mode: 0755
+
+- name: Install kitematic .deb package
+  apt:
+    deb: "{{global_vars.home_path}}/kitematic/dist/Kitematic_0.17.3_amd64.deb"

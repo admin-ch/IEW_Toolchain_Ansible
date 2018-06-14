@@ -1,0 +1,49 @@
+---
+#########################################################
+# INSTALLATION DIRECTORY
+# EXAMPLE /home/'USER'/'FOLDER'
+#########################################################
+user_session: dev
+user_home: /home/dev/
+home_path: /home/dev/development
+
+#########################################################
+# GIT URL
+#########################################################
+git_url:
+
+#########################################################
+# JAVA VERSION
+#########################################################
+
+#java_version: 10
+#java_download_url: http://download.oracle.com/otn-pub/java/jdk/10+46/76eac37278c24557a3c4199677f19b62/jdk-10_linux-x64_bin.tar.gz
+
+#java_version: 9
+#java_download_url: http://download.oracle.com/otn-pub/java/jdk/9.0.4+11/c2514751926b4512b076cc82f959763f/jdk-9.0.4_linux-x64_bin.tar.gz
+
+java_version: 8
+java_download_url: http://download.oracle.com/otn-pub/java/jdk/8u172-b11/a58eab1ec242421181065cdc37240b08/jdk-8u172-linux-x64.tar.gz
+
+
+########################################################
+# IF YOU HAVE A PROXY
+# IF YOU DON'T HAVE ANY PROXY THE DEFAULT VALUE IS FALSE
+#########################################################
+enable_proxy: false
+
+#########################################################
+## THIS BLOCK IS VALID ONLY IF NO_PROXY IS TRUE
+#########################################################
+
+proxy:
+port:
+no_proxy:
+
+nexus_url:
+proxy_pac:
+
+#########################################################
+## IF YOU HAVE A FAVORITE WALLPAPERS
+#########################################################
+wallpaper_path: ../../../jeap-ansible/roles/wallpaper/templates/Ubuntu-Wall.PNG

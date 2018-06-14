@@ -1,0 +1,25 @@
+---
+  - name: Include global_vars
+    include_vars:
+      file: 'defaults/main.yml'
+      name:  global_vars
+
+  - name: check if Intellij is installed
+    stat:
+      path={{global_vars.home_path}}/ide
+    register: intellij_present
+
+  - import_tasks: tasks/idea_install.yml
+    when: not intellij_present.stat.exists
+
+  - name: Inotify Watches Limit
+    blockinfile:
+        dest: /etc/sysctl.conf
+        insertafter: EOF
+        block: |
+            fs.inotify.max_user_watches = 1048576
+
+  - name:  Install cert tools
+    command: sysctl -p --system
+    become: true
+

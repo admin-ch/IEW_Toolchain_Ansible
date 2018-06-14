@@ -1,0 +1,6 @@
+---
+- name: Installs webpack globally using npm
+  npm: name={{item}} state=present global=yes
+  with_items:
+    - webpack
+    - webpack-dev-server

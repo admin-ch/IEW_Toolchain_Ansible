@@ -1,0 +1,48 @@
+---
+
+  - name: Fix ownership
+    file: state=directory path={{tomcat_dir}} owner=dev group=dev recurse=yes
+
+  - name: create tomcat8 group
+    group:
+      name={{tomcat_group}}
+      state=present
+
+  - name: create tomcat8 user
+    user:
+      name={{tomcat_user}}
+      group={{tomcat_group}}
+      home={{tomcat_dir}}
+      shell=/bin/bash
+      state=present
+
+  - name: check tomcat
+    stat:
+      path={{tomcat_dir}}/bin
+    register: st
+
+  - name: download tomcat
+    get_url:
+      url=http://archive.apache.org/dist/tomcat/tomcat-8/v{{tomcat_version}}/bin/apache-tomcat-{{tomcat_version}}.tar.gz
+      dest=/tmp/apache-tomcat-{{tomcat_version}}.tar.gz
+    when: not st.stat.exists
+
+  - name: extract tomcat
+    unarchive:
+      src=/tmp/apache-tomcat-{{tomcat_version}}.tar.gz
+      copy=no
+      dest=/tmp
+    when: not st.stat.exists
+
+  - name: copy tomcat
+    shell: cp -r /tmp/apache-tomcat-{{tomcat_version}}/* {{tomcat_dir}} creates={{tomcat_dir}}/bin
+    when: not st.stat.exists
+
+
+
+  - name: Tomcat Set permission to dev user
+    command: "{{ item }}"
+    with_items:
+        - chmod -R 755 {{tomcat_dir}}
+        - chown -R '{{ global_vars.user_session }}' {{tomcat_dir}}
+

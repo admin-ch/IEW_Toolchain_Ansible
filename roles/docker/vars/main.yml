@@ -1,0 +1,44 @@
+---
+# Edition can be one of: 'ce' (Community Edition) or 'ee' (Enterprise Edition).
+docker_edition: 'ce'
+docker_package: "docker-{{ docker_edition }}"
+docker_package_state: present
+
+# Docker Compose options.
+docker_install_compose: true
+docker_compose_version: "1.17.1"
+docker_compose_path: /usr/local/bin/docker-compose
+
+# Used only for Debian/Ubuntu. Switch 'stable' to 'edge' if needed.
+docker_apt_release_channel: stable
+docker_apt_repository: "deb https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} {{ docker_apt_release_channel }}"
+
+# Used only for RedHat/CentOS.
+docker_yum_repo_url: https://download.docker.com/linux/centos/docker-{{ docker_edition }}.repo
+docker_yum_repo_enable_edge: 0
+docker_yum_repo_enable_test: 0
+
+docker_service_folder: /etc/systemd/system/docker.service.d/
+
+
+# defaults file for ansible-role-docker-ce
+
+# Daemon configuration (https://docs.docker.com/engine/reference/commandline/dockerd/)
+# Example:
+# docker_daemon_config:
+#   experimental: true
+docker_daemon_config:
+# To compensate for situation where Docker daemon fails because of usermod incompatibility.
+# Ensures that 'dockremap:500000:65536' is present in /etc/subuid and /etc/subgid.
+# Note! If userns-remap is set to 'default' in docker_daemon_config this config will be unnecessary.
+docker_bug_usermod: false
+# Enable auditing of Docker related files and directories
+docker_enable_audit: false
+# Enable Docker CE Edge
+docker_enable_ce_edge: false
+# Always ensure latest version of Docker CE
+docker_latest_version: true
+# Docker package to install. Change this if you want a specific version of Docker
+docker_pkg_name: docker.io
+# If below variable is set to true it will remove older Docker installation before Docker CE.
+docker_remove_pre_ce: false

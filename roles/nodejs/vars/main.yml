@@ -1,0 +1,4 @@
+---
+nodejs_version: "8.x"
+nvm:
+  version: v0.4.0

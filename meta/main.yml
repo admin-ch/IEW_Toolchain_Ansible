@@ -1,0 +1,24 @@
+galaxy_info:
+  author: Paulo Lopes
+  description: Ubuntu Installer
+#  company: Eckerd College
+#  license: MIT
+
+  min_ansible_version: 2.3
+
+  galaxy_tags:
+    - tomcat
+
+
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - 17.10
+
+
+#dependencies:
+#  - role: ChristopherDavenport.universal-java
+#    when: tomcat_use_java
+#  - role: ChristopherDavenport.apache-portable-runtime
+#    when: tomcat_use_apr

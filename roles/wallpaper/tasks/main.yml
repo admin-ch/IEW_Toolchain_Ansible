@@ -1,0 +1,13 @@
+---
+- name: Include global_vars
+  include_vars:
+    file: 'defaults/main.yml'
+    name:  global_vars
+
+
+- name: Set WallPapepers
+  command: "{{ item }}"
+  with_items:
+    - gsettings set org.gnome.desktop.background picture-uri "file:///home/dev/Desktop/jeap-ansible/roles/wallpaper/templates/Ubuntu-Wall.PNG"
+  become: true
+  become_user: '{{ global_vars.user_session }}'

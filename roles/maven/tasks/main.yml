@@ -1,0 +1,29 @@
+---
+  - name: Include global_vars
+    include_vars:
+      file: 'defaults/main.yml'
+      name:  global_vars
+
+  - debug:
+      msg: "Home path {{ global_vars.home_path }}"
+
+  - name: Check if maven is installed
+    command: mvn -version
+    become_user: '{{ global_vars.user_session }}'
+    register: maven_result
+    ignore_errors: True
+
+  - debug:
+      var: maven_result
+
+  - debug:
+      msg: "Failed - Maven is not installed"
+    when: maven_result is failed
+
+  - debug:
+      msg: "Success - Maven is installed"
+    when:  maven_result is success
+
+  - import_tasks: tasks/maven_install.yml
+    when:  maven_result is failed
+

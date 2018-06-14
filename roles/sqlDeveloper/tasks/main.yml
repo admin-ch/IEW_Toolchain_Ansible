@@ -1,0 +1,79 @@
+---
+
+- name: create sqlDeveloper group
+  file:
+     path: "{{sqlDeveloper_install_dir}}"
+     state: directory
+
+
+- name: check if Oracle SQL Developer archive is present
+  stat:
+    path: "{{ sqlDeveloper_archive_path }}"
+  register: sqldeveloper_archive
+
+- name: create install directory
+  file:
+    dest: "{{ sqlDeveloper_install_dir }}"
+    state: directory
+  when: sqldeveloper_archive.stat.exists == True
+
+- name: set executable path
+  set_fact:
+    sqlDeveloper_exe_path: "{{ sqlDeveloper_install_dir ~ '/sqldeveloper/sqldeveloper.sh' }}"
+    sqlDeveloper_icon_path: "{{ sqlDeveloper_install_dir ~ '/sqldeveloper/icon.png' }}"
+    sqlDeveloper_dir: "{{ sqlDeveloper_install_dir ~ '/sqldeveloper/' }}"
+
+- name: check if Oracle SQL Developer is already installed
+  stat:
+    path: "{{ sqlDeveloper_exe_path }}"
+  register: sqldeveloper_executable
+
+- name: unpack sqldeveloper archive
+  unarchive:
+    copy: no
+    src: "{{ sqlDeveloper_archive_path }}"
+    dest: "{{ sqlDeveloper_install_dir }}"
+    creates: "{{ sqlDeveloper_exe_path }}"
+  become: true
+  ignore_errors: yes
+
+
+- name: initialize menu shortcut
+  template: src=sqldeveloper.desktop.j2 dest=/usr/share/applications/sqldeveloper.desktop
+  tags: ["configuration","sqldeveloper"]
+
+
+- name: create sqlDeveloper Config Directory
+  file:
+     path: "{{sqlDeveloper_config_dir}}/17.4.0/"
+     state: directory
+  tags: ["configuration","sqldeveloper"]
+
+
+- name: Copy a default sqldeveloper config
+  template: src=product.conf.j2 dest={{sqlDeveloper_config_dir}}/17.4.0/product.conf
+  tags: ["configuration","sqldeveloper"]
+
+
+#  copy:
+#    src:   filesToRemote/sqlDeveloper/.sqldeveloper
+#    dest:  /home/dev/
+#    mode: 0755
+#    backup: yes
+
+
+- name: Set jdk on sqldveloper config
+  blockinfile:
+    dest: "{{sqlDeveloper_config_dir}}/17.4.0/product.conf"
+    insertafter: 'SetJavaHome /path/jdk'
+    block: |
+        SetJavaHome /home/dev/development/java/jdk1.8.0_05
+  tags: ["configuration","sqldeveloper"]
+
+- name: SqlDeveloper Set permission to dev user
+  command: "{{ item }}"
+  with_items:
+    - chmod -R 755 {{sqlDeveloper_install_dir}}
+    - chown -R '{{ global_vars.user_session }}' {{sqlDeveloper_install_dir}}
+    - chmod -R 755 {{sqlDeveloper_config_dir}}
+    - chown -R '{{ global_vars.user_session }}' {{sqlDeveloper_config_dir}}

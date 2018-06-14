@@ -1,0 +1,4 @@
+tomcat_version: 8.5.24
+tomcat_dir: /home/dev/development/tomcat/tomcat8
+tomcat_user: Me
+tomcat_group: dev

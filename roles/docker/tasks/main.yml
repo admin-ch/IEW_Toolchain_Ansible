@@ -1,0 +1,14 @@
+---
+- name: Include global_vars
+  include_vars:
+    file: 'defaults/main.yml'
+    name:  global_vars
+
+- import_tasks: docker-install.yml
+  when: ansible_os_family == 'Debian'
+
+- debug:
+    msg: "Proxy is activated? {{ global_vars.enable_proxy }}"
+
+- import_tasks: tasks/docker-proxy.yml
+  when: global_vars.enable_proxy

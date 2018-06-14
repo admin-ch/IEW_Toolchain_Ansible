@@ -1,0 +1,31 @@
+---
+# Mirror where to dowload IntelliJ IDEA redistributable package from
+# Using HTTP because of https://github.com/ansible/ansible/issues/11579
+download_url: "http://data.services.jetbrains.com/products/releases?code=IIU&latest=true&type=release"
+
+# Directory to store files downloaded for IntelliJ IDEA installation
+# intellij_install_dir: /home/dev/development/ide
+
+# Set certificat on default IntelliJ IDEA  jre
+cacerts_path_ide: "{{global_vars.home_path}}/ide/idea-IU-{{intellij_build}}/ide/jre64/lib/security"
+
+# Location of the default directory for IntelliJ IDEA projects
+projects_folder: "/home/dev/development/projects"
+
+# Appearance of Intellij (Darcula, GTK+ or Intellij)
+intellij_theme: Darcula
+
+
+
+###TODO il faut  recuperer la variable jdk dans les var global
+### Deprecated: use users.intellij_jdks and users.intellij_default_jdk instead
+### Location of the default JDK for IntelliJ IDEA projects
+intellij_default_jdk_version: "{{global_vars.java_version}}"
+intellij_default_jdk_home: "{{global_vars.home_path}}/java/jdk{{global_vars.java_version}}"
+#
+#
+### Location of the default Apache Maven installation for IntelliJ IDEA projects
+#intellij_default_maven_home: /home/dev/development/maven/maven-3.5.2
+#
+## Location of the default configuration for IntelliJ IDEA
+intellij_default_option_dir: "{{global_vars.user_home}}.IdeaIC/config"

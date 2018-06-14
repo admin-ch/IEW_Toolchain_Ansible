@@ -1,0 +1,81 @@
+---
+  - name: Find latest version of maven
+    uri:
+      url: "http://search.maven.org/solrsearch/select?q=g:org.apache.maven+AND+a:maven-artifact&rows=20&wt=json"
+      return_content: yes
+      validate_certs: no
+      body_format: json
+    register: json_response
+
+  - set_fact:
+      maven_latest_version: "{{ json_response.json.response|json_query('docs[*].[latestVersion] | [0]')}}"
+
+  - name: "Display latest maven version"
+    debug:
+      var: maven_latest_version
+
+
+
+
+  - name: Create destination directory
+    file:
+      path: "{{global_vars.home_path}}/maven"
+      owner: '{{ global_vars.user_session }}'
+      group: '{{ global_vars.user_session }}'
+      mode: 0755
+      state: directory
+
+
+  - name: Download and untar the maven binary file
+    unarchive:
+      src: http://mirror.easyname.ch/apache/maven/maven-3/{{maven_latest_version[0]}}/binaries/apache-maven-{{maven_latest_version[0]}}-bin.tar.gz
+      dest: "{{global_vars.home_path}}/maven"
+      remote_src: yes
+      owner: '{{ global_vars.user_session }}'
+      group: '{{ global_vars.user_session }}'
+      mode: 0755
+
+  - name: Set M2_HOME
+    template:
+      src: maven_home.sh.j2
+      dest: /etc/profile.d/maven_home.sh
+
+  - name: Create a symlink to mvn
+    file:
+      src: "{{global_vars.home_path}}/maven/apache-maven-{{maven_latest_version[0]}}/bin/mvn"
+      dest: /usr/local/bin/mvn
+      owner: '{{ global_vars.user_session }}'
+      group: '{{ global_vars.user_session }}'
+      state: link
+
+
+  - name: Ensure M2_HOME is sourced from the .profile
+    blockinfile:
+      dest: "/home/dev/.profile"
+      block: |
+       M2_HOME="{{global_vars.home_path}}/maven-{{ maven_latest_version[0] }}"
+       PATH="$M2_HOME/bin:$PATH"
+      marker: '# {mark}  MANAGED BLOCK - exporte M2_HOME'
+      insertbefore: EOF
+      create: yes
+
+  - name: Create .m2 Folder
+    file:
+      state: directory
+      path: /home/dev/.m2/
+      owner: '{{ global_vars.user_session }}'
+      group: '{{ global_vars.user_session }}'
+      recurse: yes
+      mode: 0755
+
+
+  - name: Ensure jeap configuration  is correct on .M2 folder
+    template: src=settings.xml.j2 dest=/home/dev/.m2/settings.xml
+    tags: ["configuration","Maven"]
+
+
+  - name: Add M2_HOME on etc/environment
+    lineinfile:
+        dest: /etc/environment
+        insertafter: EOF
+        line: 'M2_HOME="{{global_vars.home_path}}/maven/apache-maven-{{maven_latest_version[0]}}"'

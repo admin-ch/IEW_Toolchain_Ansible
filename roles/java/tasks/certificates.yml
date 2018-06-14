@@ -1,0 +1,23 @@
+---
+  - name: Check if your cacerts existe
+    stat:
+      path=certificates/cacerts
+    register: cacerts_present
+
+  - debug:
+      msg: "Cacert folder don't existe"
+    when: not cacerts_present.stat.exists
+
+  - name: Rename default cacert to cacert old
+    command: mv {{global_vars.home_path}}/java/jdk{{global_vars.java_version}}/jre/lib/security/cacerts {{global_vars.home_path}}/java/jdk{{global_vars.java_version}}/jre/lib/security/cacerts_old
+    when:  cacerts_present.stat.exists
+
+  - name: Replace default cacerts file to your version
+    copy:
+       src:   certificates/cacerts
+       dest: '{{global_vars.home_path}}/java/jdk{{global_vars.java_version}}/jre/lib/security/'
+       owner: '{{ global_vars.user_session }}'
+       group: '{{ global_vars.user_session }}'
+       mode: 0755
+       backup: yes
+    when:  cacerts_present.stat.exists

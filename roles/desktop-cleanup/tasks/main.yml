@@ -1,0 +1,71 @@
+---
+- name: Include global_vars
+  include_vars:
+    file: 'defaults/main.yml'
+    name:  global_vars
+
+- name: Ensure Unity MediaScanner is removed (useless + cause high CPU peaks)
+  apt: pkg={{ item }} purge=yes state=absent
+  with_items:
+    - mediascanner2.0
+    - libmediascanner-2.0-0
+
+
+- name: Remove Amazon and others Unity shits
+  apt: pkg={{ item }} purge=yes state=absent
+  with_items:
+    - ubuntu-web-launchers
+
+
+- name: Remove shitty Amazon shortcut
+  file: path=/usr/share/applications/ubuntu-amazon-default.desktop force=yes state=absent
+
+
+- name: Remove exemples shortcut
+  file: path="{{ global_vars.user_home }}examples.desktop" force=yes state=absent
+
+# Reassign path :
+# xdg-user-dirs-update --set NAME ABSOLUTE_PATH
+#
+# Available values for NAME
+#   DESKTOP
+#   DOWNLOAD
+#   TEMPLATES
+#   PUBLICSHARE
+#   MUSIC
+#   PICTURES
+#   VIDEOS
+- name: Remove XDG directories
+  file: path="{{ global_vars.user_home }}{{ item }}" force=yes state=absent
+  with_items:
+    - Pictures
+    - Videos
+    - Music
+    - Templates
+    - Public
+    - share
+
+#
+
+#- name: Remove ShortsCUts  directories
+#
+#Those bookmarks are controlled by ~/.config/user-dirs.dirs and commenting out a lines configures the appearance of the list
+#
+#As an example, to remove the Videos bookmark from the list change the line:
+#
+#XDG_VIDEOS_DIR="$HOME/Videos"
+#to
+#
+##XDG_VIDEOS_DIR="$HOME/Videos"
+#Note:
+#After login the file ~/.config/user-dirs.dirs gets reverted to the original set by /etc/xdg/user-dirs.defaults. To prevent that make the file "read-only" either by right clicking and then properties > permissions or using the command
+#
+#chmod -w ~/.config/user-dirs.dirs
+#If you need to edit the file again do the opposite via Nautilus or use the command
+#
+#chmod +w ~/.config/user-dirs.dirs
+
+- name : Run xdg-user-dirs-update
+  shell: xdg-user-dirs-update
+  become: true
+  become_user: '{{ global_vars.user_session }}'

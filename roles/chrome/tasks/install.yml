@@ -1,0 +1,20 @@
+---
+
+- name: Install dependencies packages with APT
+  become: yes
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - libxss1
+    - libappindicator1
+    - libindicator7
+
+- name: Download latest .deb
+  get_url:
+    url: '{{chrome_mirror}}/{{chrome_deb}}'
+    dest: /tmp/{{chrome_deb}}
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install Debian package
+  apt: deb='/tmp/{{chrome_deb}}'

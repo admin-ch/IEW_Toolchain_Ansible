@@ -1,0 +1,52 @@
+---
+- name: Install dependencies
+  apt: name={{item}} state=latest
+  with_items:
+    - unzip
+
+- name: Create SoapUI Directory
+  file: name=/opt/soapui
+        state=directory
+
+- name: Download SoapUI binaries
+  get_url: url={{ soapui_url }}
+    dest=~/soapui-{{ soapui_version }}.tar.gz
+
+
+- name: Untar SoapUI
+  unarchive:
+    copy=no
+    src=~/soapui-{{ soapui_version }}.tar.gz
+    dest="{{ soapui_install_dir }}"
+
+- name: Create SoapUI version directory
+  file:
+    src="{{ soapui_install_dir }}//SoapUI-{{ soapui_version }}"
+    path="{{ soapui_install_dir }}/latest"
+    state=link
+
+- name: Extrat SoapUI icon from jar
+  command: bash -c 'unzip -p soapui-{{ soapui_version }}.jar com/eviware/soapui/resources/images/favicon.png >./favicon.png'
+           chdir={{ soapui_install_dir }}/latest/bin
+
+- name: Create symlink
+  file:
+    src=/opt/soapui/latest/bin/soapui.sh
+    dest=/usr/bin/soapui
+    state=link
+  become: yes
+
+- name: Create desktop entry
+  template:
+    src={{role_path}}/templates/soapui.desktop.j2
+    dest=/usr/share/applications/soapui.desktop
+    mode=755
+  with_items:
+    - {
+      name: "SoapUI",
+      exec: "/opt/soapui/latest/bin/soapui.sh",
+      icon: "/opt/soapui/latest/bin/favicon.png",
+      comment: "Test SOAP interfaces!",
+      categories: "Development",
+      path: "/opt/soapui/latest/bin"
+    }
