@@ -46,4 +46,4 @@ proxy_pac:
 #########################################################
 ## IF YOU HAVE A FAVORITE WALLPAPERS
 #########################################################
-wallpaper_path: ../../../jeap-ansible/roles/wallpaper/templates/Ubuntu-Wall.PNG
+wallpaper_path: ../../../IEW_Toolchain_Ansible/roles/wallpaper/templates/Ubuntu-Wall.PNG

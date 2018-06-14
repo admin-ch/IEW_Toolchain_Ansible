@@ -1,0 +1,33 @@
+---
+- hosts: 127.0.0.1
+
+  vars:
+    docker_users: ['deploy']
+
+  roles:
+#     - name: proxy
+#     - name: java
+#     - name: maven
+#     - name: intellij
+#     - name: nodejs
+#     - name: angular-cli
+#     - name: curl
+#     - name: docker
+#     - name: tomcat
+     - name: sqlDeveloper
+#     - name: certificates
+#     - name: soapui
+#     - name: chrome
+#     - name: atom
+#     - name: kitematic
+#     - name: desktop-preferences
+#     - name: desktop-cleanup
+#     - name: wallpaper
+
+#  tasks:
+#    - name: Reboot ubuntu
+#      shell: sleep 2 && shutdown -r now
+#      async: 1
+#      poll: 0
+#      ignore_errors: true
+#      become: yes

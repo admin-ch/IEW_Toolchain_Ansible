@@ -16,7 +16,7 @@ To do this effectively, we need to install the software-properties-common packag
 1) Open a unix terminal
 
 2) In terminal, go to the Ansible project folder. (copy paste the following command)
-	cd Desktop/jeap-ansible/
+	cd Desktop/IEW_Toolchain_Ansible/
 
 3) Run the 'desktop_install.sh' script. (copy paste the following command)
 	./desktop_install.sh
