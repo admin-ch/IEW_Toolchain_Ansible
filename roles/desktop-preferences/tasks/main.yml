@@ -14,9 +14,6 @@
          AutomaticLoginEnable=True
          AutomaticLogin=dev
 
-
-
-
 - name: Set global keybindings
   command: "{{ item }}"
   with_items:
@@ -30,7 +27,7 @@
     - gsettings set org.gnome.system.proxy.https host '{{global_vars.proxy}}'
     - gsettings set org.gnome.system.proxy.https port 8080
     - gsettings set org.gnome.system.proxy ignore-hosts "['localhost', '127.0.0.0/8', '::1', '.admin.ch']"
-    - gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'google-chrome.desktop', 'firefox.desktop',  'gnome-control-center.desktop', 'org.gnome.Terminal.desktop', 'atom.desktop', 'intellij.desktop', 'sqldeveloper.desktop','soapui.desktop', 'kitematic.desktop']"
+    - gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'google-chrome.desktop', 'firefox.desktop',  'gnome-control-center.desktop', 'org.gnome.Terminal.desktop', 'notepad-plus-plus_notepad-plus-plus.desktop', 'atom.desktop', 'jetbrains-idea.desktop', 'sqldeveloper.desktop','com-eviware-soapui-SoapUI.desktop', 'kitematic.desktop']"
     - gsettings set org.gnome.desktop.screensaver lock-enabled false
 
     - gsettings set org.gnome.desktop.wm.keybindings cycle-group "[]"
@@ -44,6 +41,8 @@
     - gsettings set org.gnome.desktop.lockdown  disable-lock-screen true
     - gsettings set org.gnome.desktop.screensaver  ubuntu-lock-on-suspend false
     - gsettings set org.gnome.settings-daemon.plugins.power active false #only for ubuntu 18
+    - gsettings set org.gnome.desktop.session idle-delay 0
+    - gsettings set org.gnome.desktop.screensaver lock-enabled false
   ignore_errors: yes
   become: true
   become_user: '{{ global_vars.user_session }}'
@@ -53,4 +52,4 @@
   apt: pkg={{ item }} state=latest
   with_items:
     - dconf-tools
-
+    - net-tools

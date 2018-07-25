@@ -27,7 +27,7 @@
     msg: "show ansible ddistibution  {{ ansible_distribution_release }}"
 
 - debug:
-    msg: "show ansible nodejs_version  {{nodejs_version }}"
+    msg: "show ansible nodejs_version  {{ nodejs_version }}"
 
 - name: Add NodeSource repositories for Node.js.
   apt_repository:

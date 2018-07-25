@@ -17,11 +17,13 @@
 #     - name: sqlDeveloper
      - name: soapui
      - name: chrome
+     - name: notepad-plus-plus
      - name: atom
      - name: kitematic
      - name: desktop-preferences
      - name: desktop-cleanup
      - name: wallpaper
+
 
 #  tasks:
 #    - name: Reboot ubuntu

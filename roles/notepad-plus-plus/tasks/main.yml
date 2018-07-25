@@ -1,0 +1,18 @@
+---
+- name: Include global_vars
+  include_vars:
+    file: 'defaults/main.yml'
+    name:  global_vars
+
+- name: Install Snapd
+  become: yes
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - snapd
+    - snapd-xdg-open
+
+- name: Install notepad++
+  command: "{{ item }}"
+  with_items:
+    - snap install notepad-plus-plus
+

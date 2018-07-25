@@ -38,14 +38,14 @@
 
 - name: Create desktop entry
   template:
-    src={{role_path}}/templates/soapui.desktop.j2
-    dest=/usr/share/applications/soapui.desktop
+    src={{role_path}}/templates/com-eviware-soapui-SoapUI.desktop.j2
+    dest=/usr/share/applications/com-eviware-soapui-SoapUI.desktop
     mode=755
   with_items:
     - {
       name: "SoapUI",
       exec: "/opt/soapui/latest/bin/soapui.sh",
-      icon: "/opt/soapui/latest/bin/favicon.png",
+      icon: "{{role_path}}/templates/soapui-icon.png",
       comment: "Test SOAP interfaces!",
       categories: "Development",
       path: "/opt/soapui/latest/bin"

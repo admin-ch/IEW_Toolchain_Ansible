@@ -17,7 +17,7 @@
     intellij_build: "{{intellij_releases_response.json.IIU.0.build}}"
 
 - name: Wat
-  debug: msg={{intellij_url}}
+  debug: msg={{ intellij_url }}
 
 - name: Ensure presence of opt
   file: path={{global_vars.home_path}}/ide state=directory owner=dev group=dev mode=0755

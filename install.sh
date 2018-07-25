@@ -9,10 +9,15 @@ execut_jeap () {
     echo '###Start jeap_ansible'
 
     echo '###Update Project'
-    git fetch
+    git fetch --all
     git pull
-    echo '###Excute ansible ...'
-    ansible-playbook  playbook.yml --connection=local -become-method=sudo   --extra-vars "ansible_sudo_pass=secret"
+    git reset --hard origin/master
+    if [ $? = 0 ] ; then
+       echo '###Excute ansible ...'
+       ansible-playbook playbook.yml --connection=local -become-method=sudo   --extra-vars "ansible_sudo_pass=secret"
+    else
+        echo "Git failed. Contact Your System Administrator"
+    fi
 }
 
 install_and_configure_git() {
@@ -45,7 +50,6 @@ install_and_configure_git() {
     fi
 
 }
-
 
 install_and_configure_ansible () {
     echo '###Installing software-properties-common ...'
@@ -81,7 +85,7 @@ then
   install_and_configure_git
   execut_jeap
 else
-  echo '###Ansible is currently not install  ...'ok
+  echo '###Ansible is currently not install  ...'
  install_and_configure_ansible
  install_and_configure_git
  execut_jeap

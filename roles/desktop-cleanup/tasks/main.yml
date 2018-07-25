@@ -38,7 +38,6 @@
 - name: Remove XDG directories
   file: path="{{ global_vars.user_home }}{{ item }}" force=yes state=absent
   with_items:
-    - Pictures
     - Videos
     - Music
     - Templates

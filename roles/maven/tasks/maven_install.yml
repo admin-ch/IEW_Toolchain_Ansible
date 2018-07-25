@@ -1,21 +1,4 @@
 ---
-  - name: Find latest version of maven
-    uri:
-      url: "http://search.maven.org/solrsearch/select?q=g:org.apache.maven+AND+a:maven-artifact&rows=20&wt=json"
-      return_content: yes
-      validate_certs: no
-      body_format: json
-    register: json_response
-
-  - set_fact:
-      maven_latest_version: "{{ json_response.json.response|json_query('docs[*].[latestVersion] | [0]')}}"
-
-  - name: "Display latest maven version"
-    debug:
-      var: maven_latest_version
-
-
-
 
   - name: Create destination directory
     file:
@@ -26,9 +9,10 @@
       state: directory
 
 
+
   - name: Download and untar the maven binary file
     unarchive:
-      src: http://mirror.easyname.ch/apache/maven/maven-3/{{maven_latest_version[0]}}/binaries/apache-maven-{{maven_latest_version[0]}}-bin.tar.gz
+      src: http://mirror.easyname.ch/apache/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz
       dest: "{{global_vars.home_path}}/maven"
       remote_src: yes
       owner: '{{ global_vars.user_session }}'
@@ -42,7 +26,7 @@
 
   - name: Create a symlink to mvn
     file:
-      src: "{{global_vars.home_path}}/maven/apache-maven-{{maven_latest_version[0]}}/bin/mvn"
+      src: "{{global_vars.home_path}}/maven/apache-maven-3.5.3/bin/mvn"
       dest: /usr/local/bin/mvn
       owner: '{{ global_vars.user_session }}'
       group: '{{ global_vars.user_session }}'
@@ -53,7 +37,7 @@
     blockinfile:
       dest: "/home/dev/.profile"
       block: |
-       M2_HOME="{{global_vars.home_path}}/maven-{{ maven_latest_version[0] }}"
+       M2_HOME="{{global_vars.home_path}}/maven-3.5.3"
        PATH="$M2_HOME/bin:$PATH"
       marker: '# {mark}  MANAGED BLOCK - exporte M2_HOME'
       insertbefore: EOF
@@ -78,4 +62,4 @@
     lineinfile:
         dest: /etc/environment
         insertafter: EOF
-        line: 'M2_HOME="{{global_vars.home_path}}/maven/apache-maven-{{maven_latest_version[0]}}"'
+        line: 'M2_HOME="{{global_vars.home_path}}/maven/apache-maven-3.5.3"'
