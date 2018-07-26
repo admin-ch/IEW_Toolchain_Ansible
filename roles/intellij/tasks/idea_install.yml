@@ -49,7 +49,7 @@
   file: state=absent path={{intellij_archive}}
 
 - name: Wat
-  debug: msg={{intellij_home}}
+  debug: msg={{ intellij_home }}
 
 - name: Retreive intellij dir name
   command: ls -t {{intellij_home}}
@@ -69,7 +69,7 @@
   tags: ["configuration","intellij"]
 
 - name: Ensure intellij shortcut is present
-  template: src=intellij.desktop.j2 dest=/usr/share/applications/intellij.desktop
+  template: src=jetbrains-idea.desktop.j2 dest=/usr/share/applications/jetbrains-idea.desktop
   tags: ["configuration","intellij"]
 
 - stat:
@@ -105,8 +105,6 @@
 - name: Set the default JDK for Intellij
   template: src=jdk.table.xml dest={{intellij_default_option_dir}}/options group=dev owner=dev mode=755
   tags: ["configuration","intellij"]
-
-
 
 - name: Rename default cacert to cacert_old
   command: mv  {{intellij_home}}/jre64/lib/security/cacerts {{intellij_home}}/jre64/lib/security/cacerts_old

@@ -45,6 +45,16 @@ install_and_configure_git() {
 
         git config --global url.https://.insteadOf git://
 
+        git config --global http.proxy http://proxy-bvcol.admin.ch:8080
+
+        git config --global http.sslVerify false
+
+        git config --global https.proxy http://proxy-bvcol.admin.ch:8080
+
+        git config --global http.http://stash.eap.bit.admin.ch.proxy ""
+
+        git config --global http.https://stash.eap.bit.admin.ch.proxy ""
+
         echo '###Git has been configured!'
         git config --list
     fi
@@ -79,15 +89,8 @@ install_and_configure_ansible () {
 
 
 
-if [[ $(ansible --version 2>&1) == *"ansible"* ]];
-then
-  echo '###Cool ! Ansible work ... We can start'
-  install_and_configure_git
-  execut_jeap
-else
-  echo '###Ansible is currently not install  ...'
+
  install_and_configure_ansible
  install_and_configure_git
  execut_jeap
 
-fi
