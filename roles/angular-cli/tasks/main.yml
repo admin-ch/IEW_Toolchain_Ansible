@@ -1,5 +1,5 @@
 ---
-- name: Install Angular-cli ( *** warning  ! If it lasts more than 2 minutes! Stop the process and restart the desktop_install script ***  )
+- name: Install Angular-cli ( *** warning  ! If it lasts more than 2 minutes! Stop the process and restart the install.sh script ***  )
   npm:
     name: '@angular/cli'
     global: yes
