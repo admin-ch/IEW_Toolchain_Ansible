@@ -1,14 +1,14 @@
 galaxy_info:
   author: Paulo Lopes
-  description: Ubuntu Installer
-#  company: Eckerd College
-#  license: MIT
+  description: Install a complete java developer machine.
+
+  license: MIT
 
   min_ansible_version: 2.5
 
   galaxy_tags:
     - tomcat
-    -  proxy
+    - ubuntu proxys
     - java
     - maven
     - intellij
@@ -28,6 +28,6 @@ galaxy_info:
 
 
   platforms:
-    - Ubuntu
+     - name: Ubuntu
       versions:
         - 18.04
