@@ -11,6 +11,5 @@
         insertafter: EOF
         block: |
             [Service]
-            ExecStart=
             ExecStart=/usr/bin/dockerd --dns 131.102.100.110 --dns 131.102.37.142 --dns 8.8.8.8 --dns 8.8.4.4 -H fd://
 
