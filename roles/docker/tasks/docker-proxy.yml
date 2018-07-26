@@ -11,9 +11,6 @@
         insertafter: EOF
         block: |
             [Service]
-            Environment="http_proxy=http://{{global_vars.proxy}}:{{global_vars.port}}"
-            Environment="https_proxy=http://{{global_vars.proxy}}:{{global_vars.port}}"
-            Environment="no_proxy=127.0.0.1, localhost, {{global_vars.no_proxy}}"
             ExecStart=
             ExecStart=/usr/bin/dockerd --dns 131.102.100.110 --dns 131.102.37.142 --dns 8.8.8.8 --dns 8.8.4.4 -H fd://
 
