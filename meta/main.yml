@@ -28,6 +28,6 @@ galaxy_info:
 
 
   platforms:
-     - name: Ubuntu
+    - name: Ubuntu
       versions:
         - 18.04
