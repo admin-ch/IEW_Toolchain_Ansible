@@ -89,8 +89,15 @@ install_and_configure_ansible () {
 
 
 
-
+if [[ $(ansible --version 2>&1) == *"ansible"* ]];
+then
+  echo '###Cool ! Ansible work ... We can start'
+  install_and_configure_git
+  execut_jeap
+else
+  echo '###Ansible is currently not install  ...'
  install_and_configure_ansible
  install_and_configure_git
  execut_jeap
 
+fi
