@@ -4,21 +4,30 @@ galaxy_info:
 #  company: Eckerd College
 #  license: MIT
 
-  min_ansible_version: 2.3
+  min_ansible_version: 2.5
 
   galaxy_tags:
     - tomcat
-
+    -  proxy
+    - java
+    - maven
+    - intellij
+    - nodejs
+    - angular-cli
+    - curl
+    - docker
+    - tomcat
+    - soapui
+    - chrome
+    - notepad-plus-plus
+    - atom
+    - kitematic
+    - desktop-preferences
+    - desktop-cleanup
+    - wallpaper
 
 
   platforms:
-    - name: Ubuntu
+    - Ubuntu
       versions:
-        - 17.10
-
-
-#dependencies:
-#  - role: ChristopherDavenport.universal-java
-#    when: tomcat_use_java
-#  - role: ChristopherDavenport.apache-portable-runtime
-#    when: tomcat_use_apr
+        - 18.04
