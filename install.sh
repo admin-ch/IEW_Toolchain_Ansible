@@ -7,8 +7,8 @@
 
 execut_jeap () {
     echo '###Start jeap_ansible'
-
-    echo '###Update Project'
+    if [ -d .git ]; then
+        echo '###Update Project'
     git fetch --all
     git pull
     git reset --hard origin/master
@@ -18,6 +18,9 @@ execut_jeap () {
     else
         echo "Git failed. Contact Your System Administrator"
     fi
+    else
+        ansible-playbook playbook.yml --connection=local -become-method=sudo   --extra-vars "ansible_sudo_pass=secret"
+    fi;
 }
 
 install_and_configure_git() {
