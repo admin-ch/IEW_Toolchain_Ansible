@@ -15,11 +15,13 @@ execut_jeap () {
     if [ $? = 0 ] ; then
        echo '###Excute ansible ...'
        ansible-playbook playbook.yml --connection=local -become-method=sudo   --extra-vars "ansible_sudo_pass=secret"
+        exit 0
     else
         echo "Git failed. Contact Your System Administrator"
     fi
     else
         ansible-playbook playbook.yml --connection=local -become-method=sudo   --extra-vars "ansible_sudo_pass=secret"
+         exit 0
     fi;
 }
 
@@ -88,7 +90,8 @@ install_and_configure_ansible () {
     ansible-playbook playbook.yml --connection=local -become-method=sudo   --extra-vars "ansible_sudo_pass=secret"
 }
 
-if [[ $(ansible --version 2>&1) == *"ansible"* ]];
+echo '###Check if ansible is installed'
+if [ -n `which ansible` ];
 then
   echo '###Cool ! Ansible work ... We can start'
   install_and_configure_git
