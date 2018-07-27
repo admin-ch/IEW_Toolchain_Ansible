@@ -57,9 +57,6 @@ install_and_configure_git() {
         git config --global http.http://stash.eap.bit.admin.ch.proxy ""
 
         git config --global http.https://stash.eap.bit.admin.ch.proxy ""
-
-        echo '###Git has been configured!'
-        git config --list
     fi
 
 }

@@ -41,7 +41,7 @@
       dest: "/home/dev/.profile"
       block: |
        JAVA_HOME="{{global_vars.home_path}}/java/jdk{{global_vars.java_version}}"
-       PATH="$JAVA_HOME/jre/bin:$PATH"
+       PATH="$JAVA_HOME/bin:$PATH"
       marker: '# {mark}  MANAGED BLOCK - exporte JAVA_HOME'
       insertbefore: EOF
       create: yes
@@ -50,7 +50,7 @@
     lineinfile:
         dest: /etc/environment
         insertafter: EOF
-        line: 'JAVA_HOME={{global_vars.home_path}}/java/jdk{{global_vars.java_version}}'
+        line: 'JAVA_HOME="{{global_vars.home_path}}/java/jdk{{global_vars.java_version}}"'
     become: yes
 
 
