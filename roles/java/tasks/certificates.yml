@@ -9,7 +9,7 @@
     when: not cacerts_present.stat.exists
 
   - name: Rename default cacert to cacert old
-    command: mv {{global_vars.home_path}}/java/jdk{{global_vars.java_version}}/jre/lib/security/cacerts {{global_vars.home_path}}/java/jdk{{global_vars.java_version}}/jre/lib/security/cacerts_old
+    command: mv {{global_vars.home_path}}/java/jdk{{global_vars.java_version}}/lib/security/cacerts {{global_vars.home_path}}/java/jdk{{global_vars.java_version}}/lib/security/cacerts_old
     when:  cacerts_present.stat.exists
 
   - name: Replace default cacerts file to your version
