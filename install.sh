@@ -26,12 +26,10 @@ execut_jeap () {
 install_and_configure_git() {
     ## Git ##
     echo '###Installing Git..'
-    sudo apt-get install git -y
 
     if [ -e ~/.gitconfig ]
     then
-        git fetch
-        git pull
+       sudo apt-get install git -y
     else
         # Git Configuration
         echo '###Congigure Git..'
@@ -89,8 +87,6 @@ install_and_configure_ansible () {
     echo '###Excute ansible ...'
     ansible-playbook playbook.yml --connection=local -become-method=sudo   --extra-vars "ansible_sudo_pass=secret"
 }
-
-
 
 if [[ $(ansible --version 2>&1) == *"ansible"* ]];
 then
