@@ -14,26 +14,23 @@ execut_jeap () {
     git reset --hard origin/master
     if [ $? = 0 ] ; then
        echo '###Excute ansible ...'
-       ansible-playbook playbook.yml --connection=local -become-method=sudo   --extra-vars "ansible_sudo_pass=secret"
-        exit 0
+       ansible-playbook playbook.yml --connection=local -become-method=sudo   --extra-vars   "ansible_sudo_pass=secret" -vvv
+        exit 1
     else
         echo "Git failed. Contact Your System Administrator"
     fi
     else
-        ansible-playbook playbook.yml --connection=local -become-method=sudo   --extra-vars "ansible_sudo_pass=secret"
-         exit 0
+        ansible-playbook playbook.yml --connection=local -become-method=sudo   --extra-vars "ansible_sudo_pass=secret" -vvv
+         exit 1
     fi;
 }
 
-install_and_configure_git() {
-    ## Git ##
-    echo '###Installing Git..'
+configure_git() {
 
-    if [ -e ~/.gitconfig ]
-    then
-       sudo apt-get install git -y
-    else
-        # Git Configuration
+#   Check if .gitconfig existe
+  	if ! [ -e ~/.gitconfig ]
+		then
+
         echo '###Congigure Git..'
 
         echo "Enter the Global Username for Git:";
@@ -57,8 +54,26 @@ install_and_configure_git() {
         git config --global http.http://stash.eap.bit.admin.ch.proxy ""
 
         git config --global http.https://stash.eap.bit.admin.ch.proxy ""
-    fi
 
+        echo '###Git has been configured!'
+        git config --list
+
+	else
+		echo 'git alreedy configuraded'
+	fi
+}
+
+install_and_configure_git() {
+
+#     Check if git is installed
+	if [ -x "$(command -v git)" ]; then
+	   echo '###Installing Git..'
+       sudo apt-get install git -y
+	   configure_git
+    else
+		configure_git
+    fi
+	echo '###Git is installed and configured'
 }
 
 install_and_configure_ansible () {
@@ -82,21 +97,18 @@ install_and_configure_ansible () {
 
     echo '###Installing gsetting on ansible module ...'
     sudo curl https://raw.githubusercontent.com/jistr/ansible-gsetting/master/gsetting.py > /home/dev/.ansible/plugins/modules/gsetting
-
-    echo '###Excute ansible ...'
-    ansible-playbook playbook.yml --connection=local -become-method=sudo   --extra-vars "ansible_sudo_pass=secret"
 }
 
-echo '###Check if ansible is installed'
-if [ -n `which ansible` ];
-then
-  echo '###Cool ! Ansible work ... We can start'
-  install_and_configure_git
-  execut_jeap
+#Check if ansible exit
+if  [ -x "$(command -v ansible)" ]; then
+	echo '###Cool ! Ansible work ... We can start'
+	install_and_configure_git
+	execut_jeap
+	exit 1
 else
-  echo '###Ansible is currently not install  ...'
- install_and_configure_ansible
- install_and_configure_git
- execut_jeap
-
+	echo 'Ready:ansible is  installed.' >&2
+	install_and_configure_ansible
+	install_and_configure_git
+	execut_jeap
+	exit 1
 fi
