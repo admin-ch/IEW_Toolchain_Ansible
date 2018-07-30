@@ -15,7 +15,7 @@
   - name: Replace default cacerts file to your version
     copy:
        src:   certificates/cacerts
-       dest: '{{global_vars.home_path}}/java/jdk{{global_vars.java_version}}/jre/lib/security/'
+       dest: '{{global_vars.home_path}}/java/jdk{{global_vars.java_version}}/lib/security/'
        owner: '{{ global_vars.user_session }}'
        group: '{{ global_vars.user_session }}'
        mode: 0755
