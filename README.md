@@ -33,7 +33,6 @@ Run `ansible-playbook ansible-desktop.yml --ask-become-pass` and enter your sudo
 
 ## Roles included
 
-
 | Role                     | Description                                                                                                                                                                                                                                                                                                                           |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | | **General** |
@@ -63,7 +62,6 @@ Run `ansible-playbook ansible-desktop.yml --ask-become-pass` and enter your sudo
 | | **Others** |
 | dotfiles                 | Clone my personal [dotfiles](https://github.com/Benoth/dotfiles) Git repository and their dependencies                                                                                                                                                                                                                                |
 | projects-installer       | Clone my repository [projects-installer](https://github.com/Benoth/projects-installer), used to deploy my personal and clients projects (Ansible based)                                                                                                                                                                               |
-
 
 
 ## License
