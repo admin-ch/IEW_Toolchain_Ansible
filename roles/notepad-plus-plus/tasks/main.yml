@@ -15,4 +15,4 @@
   command: "{{ item }}"
   with_items:
     - snap install notepad-plus-plus
-
+  ignore_errors: yes

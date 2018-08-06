@@ -14,7 +14,6 @@
      - name: curl
      - name: docker
      - name: tomcat
-#     - name: sqlDeveloper
      - name: soapui
      - name: chrome
      - name: notepad-plus-plus

@@ -11,7 +11,7 @@
     command: java -version
     become_user: '{{ global_vars.user_session }}'
     register: java_result
-    ignore_errors: True
+    ignore_errors: true
 
   - debug:
       var: java_result
