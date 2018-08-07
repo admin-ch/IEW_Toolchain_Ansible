@@ -5,9 +5,17 @@
     name:  global_vars
 
 
+- name: Add version to images
+  command: "{{ item }}"
+  with_items:
+    - convert -pointsize 20 -fill yellow -draw 'text 1600,1100 "Toolchain version = {{global_vars.project_version}} "' -draw 'text 1600,1120  "OS version = {{ansible_distribution}} {{ansible_distribution_version}} "'  -draw 'text 1600,1140  "Last update = {{global_vars.project_last_update}}  "' /home/dev/Desktop/IEW_Toolchain_Ansible/roles/wallpaper/templates/Ubuntu-Wall.PNG /home/dev/Desktop/IEW_Toolchain_Ansible/roles/wallpaper/templates/ansible.PNG
+  become: true
+  become_user: '{{ global_vars.user_session }}'
+
+
 - name: Set WallPapepers
   command: "{{ item }}"
   with_items:
-    - gsettings set org.gnome.desktop.background picture-uri "file:///home/dev/Desktop/IEW_Toolchain_Ansible/roles/wallpaper/templates/Ubuntu-Wall.PNG"
+    - gsettings set org.gnome.desktop.background picture-uri "/home/dev/Desktop/IEW_Toolchain_Ansible/roles/wallpaper/templates/ansible.PNG"
   become: true
   become_user: '{{ global_vars.user_session }}'
