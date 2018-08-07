@@ -13,6 +13,7 @@
   become_user: '{{ global_vars.user_session }}'
 
 
+
 - name: Set WallPapepers
   command: "{{ item }}"
   with_items:
