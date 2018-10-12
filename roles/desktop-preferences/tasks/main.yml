@@ -12,7 +12,7 @@
       insertafter: '#  AutomaticLogin = user1'
       block: |
          AutomaticLoginEnable=True
-         AutomaticLogin=dev
+         AutomaticLogin={{global_vars.user_session}}
 
 - name: Set global keybindings
   command: "{{ item }}"

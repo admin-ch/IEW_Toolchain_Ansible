@@ -1,38 +1,34 @@
 ---
-  - name: Include global_vars
-    include_vars:
-      file: 'defaults/main.yml'
-      name:  global_vars
+- name: Include global_vars
+  include_vars:
+    file: 'defaults/main.yml'
+    name:  global_vars
 
-  - debug:
-    msg: "{{ global_vars.no_proxy }}"
+- name: configure environment proxys
+  blockinfile:
+    dest: /etc/environment
+    insertafter: EOF
+    block: |
+      no_proxy="localhost, 127.0.0.1, {{global_vars.no_proxy}}"
+      http_proxy="http://{{global_vars.proxy}}:{{global_vars.port}}/"
+      https_proxy="http://{{global_vars.proxy}}:{{global_vars.port}}/"
+  when: global_vars.enable_proxy
 
-
-  - name: configure environment proxys
-    blockinfile:
-        dest: /etc/environment
-        insertafter: EOF
-        block: |
-            no_proxy="localhost, 127.0.0.1, {{global_vars.no_proxy}}"
-            http_proxy="http://{{global_vars.proxy}}:{{global_vars.port}}/"
-            https_proxy="http://{{global_vars.proxy}}:{{global_vars.port}}/"
-    when: global_vars.enable_proxy
-
-  - name: Prepare configure proxys for typings
-    copy:
-      content: '{
+- name: Prepare configure proxys for typings
+  copy:
+    content: '{
                     "proxy": "{{global_vars.proxy}}:{{global_vars.port}}"
                 }'
-      dest: '{{global_vars.user_home}}.typingsrc'
-      force: no
-      group: '{{ global_vars.user_session }}'
-      owner: '{{ global_vars.user_session }}'
-      mode: 0755
-    when: global_vars.enable_proxy
+    dest: '{{global_vars.user_home}}.typingsrc'
+    force: no
+    group: '{{ global_vars.user_session }}'
+    owner: '{{ global_vars.user_session }}'
+    mode: 0755
+  when: global_vars.enable_proxy
 
-  - name: Prepare configure proxys for npmrc
-    copy:
-      content: '##registry=https://registry.npmjs.org/
+- name: Prepare configure proxys for npmrc
+  copy:
+    content: '##registry=https://registry.npmjs.org/
 
                 registry= {{global_vars.nexus_url}}
 
@@ -40,22 +36,22 @@
 
                 npm set proxy http://{{global_vars.proxy}}:{{global_vars.port}}/'
 
-      dest: '{{global_vars.user_home}}.npmrc'
-      force: yes
-      group: '{{ global_vars.user_session }}'
-      owner: '{{ global_vars.user_session }}'
-      mode: 0755
-    when: global_vars.enable_proxy
+    dest: '{{global_vars.user_home}}.npmrc'
+    force: yes
+    group: '{{ global_vars.user_session }}'
+    owner: '{{ global_vars.user_session }}'
+    mode: 0755
+  when: global_vars.enable_proxy
 
-  - name: Prepare configure proxys for curlrc
-    copy:
-      content: 'proxy = http://{{global_vars.proxy}}:{{global_vars.port}}/'
-      dest: '{{global_vars.user_home}}.curlrc'
-      force: no
-      group: '{{ global_vars.user_session }}'
-      owner: '{{ global_vars.user_session }}'
-      mode: 0755
-    when: global_vars.enable_proxy
+- name: Prepare configure proxys for curlrc
+  copy:
+    content: 'proxy = http://{{global_vars.proxy}}:{{global_vars.port}}/'
+    dest: '{{global_vars.user_home}}.curlrc'
+    force: no
+    group: '{{ global_vars.user_session }}'
+    owner: '{{ global_vars.user_session }}'
+    mode: 0755
+  when: global_vars.enable_proxy
 
 
 
@@ -99,83 +95,82 @@
 #      mode: 0755
 #    when: global_vars.enable_proxy
 
-  - stat:
-      path: "{{ global_vars.home_path }}"
-    register: p
-  - debug:
-      msg: "Path exists and is a directory"
-    when: p.stat.isdir is defined and p.stat.isdir
+- stat:
+    path: "{{ global_vars.home_path }}"
+  register: p
+- debug:
+    msg: "Path exists and is a directory"
+  when: p.stat.isdir is defined and p.stat.isdir
 
-  - name: Creates development directory if not exite
-    file:
-      path: "{{ global_vars.home_path }}"
-      state: directory
-      group: '{{ global_vars.user_session }}'
-      owner: '{{ global_vars.user_session }}'
-      mode: 0755
-    when: p.stat.isdir is not defined
+- name: Creates development directory if not exite
+  file:
+    path: "{{ global_vars.home_path }}"
+    state: directory
+    group: '{{ global_vars.user_session }}'
+    owner: '{{ global_vars.user_session }}'
+    mode: 0755
+  when: p.stat.isdir is not defined
 
-  - name: Configure network ubuntu proxy
-    command: "{{ item }}"
-    with_items:
-      -  gsettings set org.gnome.system.proxy use-same-proxy false
-      -  gsettings set org.gnome.system.proxy mode 'manual'
-      -  gsettings set org.gnome.system.proxy autoconfig-url '{{global_vars.proxy_pac}}'
-      -  gsettings set org.gnome.system.proxy.http host '{{global_vars.proxy}}'
-      -  gsettings set org.gnome.system.proxy.http port {{global_vars.port}}
-      -  gsettings set org.gnome.system.proxy.http enabled false
-      -  gsettings set org.gnome.system.proxy.https host '{{global_vars.proxy}}'
-      -  gsettings set org.gnome.system.proxy.https port {{global_vars.port}}
-      -  gsettings set org.gnome.system.proxy ignore-hosts "['localhost', '127.0.0.0/8', '::1', '{{global_vars.no_proxy}}']"
-    when: global_vars.enable_proxy
+- name: Configure network ubuntu proxy
+  command: "{{ item }}"
+  with_items:
+  -  gsettings set org.gnome.system.proxy use-same-proxy false
+  -  gsettings set org.gnome.system.proxy mode 'manual'
+  -  gsettings set org.gnome.system.proxy autoconfig-url '{{global_vars.proxy_pac}}'
+  -  gsettings set org.gnome.system.proxy.http host '{{global_vars.proxy}}'
+  -  gsettings set org.gnome.system.proxy.http port {{global_vars.port}}
+  -  gsettings set org.gnome.system.proxy.http enabled false
+  -  gsettings set org.gnome.system.proxy.https host '{{global_vars.proxy}}'
+  -  gsettings set org.gnome.system.proxy.https port {{global_vars.port}}
+  -  gsettings set org.gnome.system.proxy ignore-hosts "['localhost', '127.0.0.0/8', '::1', '{{global_vars.no_proxy}}']"
+  when: global_vars.enable_proxy
 
-  - name: Ensure dpkg lock file is removed
-    file:
-      state: absent
-      path: "/var/lib/dpkg/lock"
+- name: Ensure dpkg lock file is removed
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock"
 
-  - name: Ensure archive lock file is removed
-    file:
-    file:
-      state: absent
-      path: "/var/cache/apt/archives/lock"
+- name: Ensure archive lock file is removed
+  file:
+    state: absent
+    path: "/var/cache/apt/archives/lock"
 
-  - name: Ensure lists lock file is removed
-    file:
-      state: absent
-      path: "/var/lib/apt/lists/lock "
+- name: Ensure lists lock file is removed
+  file:
+    state: absent
+    path: "/var/lib/apt/lists/lock "
 
-  - name: Ensure apt.conf.d/proxy existe
-    file:
-      state: touch
-      path: "/etc/apt/apt.conf.d/proxy"
-    when: global_vars.enable_proxy
+- name: Ensure apt.conf.d/proxy existe
+  file:
+    state: touch
+    path: "/etc/apt/apt.conf.d/proxy"
+  when: global_vars.enable_proxy
 
-  - name: configure apt proxy
-    blockinfile:
-        dest: /etc/apt/apt.conf.d/proxy
-        insertafter: EOF
-        marker: ""
-        block: |
-            Acquire::http::proxy "http://{{global_vars.proxy}}:{{global_vars.port}}/";
-            Acquire::https::proxy "http://{{global_vars.proxy}}:{{global_vars.port}}/";
-    when: global_vars.enable_proxy and global_vars.enable_proxy
+- name: configure apt proxy
+  blockinfile:
+    dest: /etc/apt/apt.conf.d/proxy
+    insertafter: EOF
+    marker: ""
+    block: |
+      Acquire::http::proxy "http://{{global_vars.proxy}}:{{global_vars.port}}/";
+      Acquire::https::proxy "http://{{global_vars.proxy}}:{{global_vars.port}}/";
+  when: global_vars.enable_proxy and global_vars.enable_proxy
 
-  - name: Update APT package manager repositories cache
-    become: true
-    apt:
-      update_cache: yes
+- name: Update APT package manager repositories cache
+  become: true
+  apt:
+    update_cache: yes
 
-  - name: Upgrade installed packages
-    become: true
-    apt:
-      upgrade: yes
-    register: aptout
+- name: Upgrade installed packages
+  become: true
+  apt:
+    upgrade: yes
+  register: aptout
 
-  # show the content of aptout var
-  - debug: var=aptout
+# show the content of aptout var
+- debug: var=aptout
 
-  - name: Inslatll jmespath for json
-    apt: pkg={{ item }} state=latest
-    with_items:
-      - python-jmespath
+- name: Inslatll jmespath for json
+  apt: pkg= python-jmespath state=latest
+  with_items:
+  - python-jmespath

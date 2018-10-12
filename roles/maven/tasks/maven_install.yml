@@ -12,7 +12,7 @@
 
   - name: Download and untar the maven binary file
     unarchive:
-      src: http://mirror.easyname.ch/apache/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz
+      src: http://mirror.easyname.ch/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
       dest: "{{global_vars.home_path}}/maven"
       remote_src: yes
       owner: '{{ global_vars.user_session }}'
@@ -26,7 +26,7 @@
 
   - name: Create a symlink to mvn
     file:
-      src: "{{global_vars.home_path}}/maven/apache-maven-3.5.3/bin/mvn"
+      src: "{{global_vars.home_path}}/maven/apache-maven-3.5.4/bin/mvn"
       dest: /usr/local/bin/mvn
       owner: '{{ global_vars.user_session }}'
       group: '{{ global_vars.user_session }}'
@@ -46,7 +46,7 @@
   - name: Create .m2 Folder
     file:
       state: directory
-      path: /home/dev/.m2/
+      path: /home/{{global_vars.user_session}}/.m2/
       owner: '{{ global_vars.user_session }}'
       group: '{{ global_vars.user_session }}'
       recurse: yes

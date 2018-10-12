@@ -1,7 +1,7 @@
 ---
 
   - name: Fix ownership
-    file: state=directory path={{tomcat_dir}} owner=dev group=dev recurse=yes
+    file: state=directory path={{tomcat_dir}} owner={{global_vars.user_session}} group={{global_vars.user_session}} recurse=yes
 
   - name: create tomcat8 group
     group:

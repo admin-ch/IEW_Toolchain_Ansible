@@ -16,8 +16,8 @@ git_url: stash.eap.bit.admin.ch
 #########################################################
 # Project VERSION
 #########################################################
-project_version: 1.0
-project_last_update: 07-08-2018
+project_version: 1.1.100
+project_last_update: 20-10-2018
 
 
 #########################################################
@@ -25,14 +25,16 @@ project_last_update: 07-08-2018
 #########################################################
 
 #oracle jdk 10
-#java_version: 10
-#java_download_url: http://download.oracle.com/otn-pub/java/jdk/10+46/76eac37278c24557a3c4199677f19b62/jdk-10_linux-x64_bin.tar.gz
+java_version: 10
+java_download_url: http://download.oracle.com/otn-pub/java/jdk/10+46/76eac37278c24557a3c4199677f19b62/jdk-10_linux-x64_bin.tar.gz
 
 
 #oracle jdk 9
 #java_version: 9
 #java_download_url: http://download.oracle.com/otn-pub/java/jdk/9.0.4+11/c2514751926b4512b076cc82f959763f/jdk-9.0.4_linux-x64_bin.tar.gz
 #open_JDK_java_download_url: https://download.java.net/java/GA/jdk9/9.0.4/binaries/openjdk-9.0.4_linux-x64_bin.tar.gz
+
+
 #oracle jdk 8
 #java_version: 8
 #java_download_url: http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-8u181-linux-x64.tar.gz
@@ -40,10 +42,8 @@ project_last_update: 07-08-2018
 
 
 #openjdk 8
-java_version: 8
-java_download_url: https://download.java.net/openjdk/jdk8u40/ri/openjdk-8u40-b25-linux-x64-10_feb_2015.tar.gz
-
-
+#java_version: 8
+#java_download_url: https://download.java.net/openjdk/jdk8u40/ri/openjdk-8u40-b25-linux-x64-10_feb_2015.tar.gz
 
 ########################################################
 # IF YOU HAVE A PROXY

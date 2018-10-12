@@ -3,7 +3,7 @@
     file:
       state: touch
       path: "/etc/systemd/system/docker.service.d/http-proxy.conf"
-    became : true
+    become : yes
 
   - name: configure environment proxys
     blockinfile:

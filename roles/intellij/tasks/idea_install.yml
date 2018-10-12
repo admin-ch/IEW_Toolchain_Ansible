@@ -20,7 +20,7 @@
   debug: msg={{ intellij_url }}
 
 - name: Ensure presence of opt
-  file: path={{global_vars.home_path}}/ide state=directory owner=dev group=dev mode=0755
+  file: path={{global_vars.home_path}}/ide state=directory owner={{global_vars.user_session}}  group={{global_vars.user_session}}  mode=0755
 
 - name: Download intellij
   get_url: url={{intellij_url}} dest={{global_vars.home_path}}/ide/idea_{{intellij_version}}.archive
@@ -57,7 +57,7 @@
   tags: ["configuration","intellij"]
 
 - name: Give rights
-  file: dest={{intellij_home}} owner=root group=dev owner=dev mode=0755 recurse=yes
+  file: dest={{intellij_home}} owner=root group={{global_vars.user_session}}  owner={{global_vars.user_session}}  mode=0755 recurse=yes
 
 - name: Ensure intellij is configured
   template: src=idea.properties.j2 dest={{intellij_home}}/bin/idea.properties
@@ -88,22 +88,22 @@
   when: p.stat.isdir is not defined
 
 - name: Ensure presence of .IdeaCOnfiguration
-  file: path={{intellij_default_option_dir}}/options state=directory group=dev owner=dev mode=755
+  file: path={{intellij_default_option_dir}}/options state=directory group={{global_vars.user_session}}  owner={{global_vars.user_session}}  mode=755
 
 - name: Set the default Port for Intellij
-  template: src=port dest={{intellij_default_option_dir}} group=dev owner=dev mode=755
+  template: src=port dest={{intellij_default_option_dir}} group={{global_vars.user_session}}  owner={{global_vars.user_session}}  mode=755
   tags: ["configuration","intellij"]
 
 - name: Set the default Theme for Intellij
-  template: src=colors.scheme.xml  dest={{intellij_default_option_dir}}/options group=dev owner=dev mode=755
+  template: src=colors.scheme.xml  dest={{intellij_default_option_dir}}/options group={{global_vars.user_session}}  owner={{global_vars.user_session}}  mode=755
   tags: ["configuration","intellij"]
 
 - name: Set the default Proxy for Intellij
-  template: src=proxy.settings.xml  dest={{intellij_default_option_dir}}/options group=dev owner=dev mode=755
+  template: src=proxy.settings.xml  dest={{intellij_default_option_dir}}/options group={{global_vars.user_session}}  owner={{global_vars.user_session}}  mode=755
   when: global_vars.enable_proxy
 
 - name: Set the default JDK for Intellij
-  template: src=jdk.table.xml dest={{intellij_default_option_dir}}/options group=dev owner=dev mode=755
+  template: src=jdk.table.xml dest={{intellij_default_option_dir}}/options group={{global_vars.user_session}}  owner={{global_vars.user_session}}  mode=755
   tags: ["configuration","intellij"]
 
 - name: Rename default cacert to cacert_old

@@ -25,7 +25,7 @@ intellij_default_jdk_home: "{{global_vars.home_path}}/java/jdk{{global_vars.java
 #
 #
 ### Location of the default Apache Maven installation for IntelliJ IDEA projects
-#intellij_default_maven_home: /home/dev/development/maven/maven-3.5.2
+#intellij_default_maven_home: /home/{{global_vars.user_session}}/development/maven/maven-3.5.2
 #
 ## Location of the default configuration for IntelliJ IDEA
 intellij_default_option_dir: "{{global_vars.user_home}}.IdeaIC/config"

@@ -6,28 +6,28 @@
 
   roles:
      - name: proxy
-     - name: java
-     - name: maven
-     - name: intellij
-     - name: nodejs
-     - name: angular-cli
-     - name: curl
-     - name: docker
-     - name: tomcat
-     - name: soapui
-     - name: chrome
-     - name: notepad-plus-plus
-     - name: atom
-     - name: kitematic
-     - name: desktop-preferences
-     - name: desktop-cleanup
-     - name: wallpaper
-
-
-  tasks:
-    - name: Reboot ubuntu
-      shell: sleep 2 && shutdown -r now
-      async: 1
-      poll: 0
-      ignore_errors: true
-      become: yes
+#     - name: java
+#     - name: maven
+#     - name: intellij
+#     - name: nodejs
+#     - name: angular-cli
+#     - name: curl
+#     - name: docker
+#     - name: tomcat
+#     - name: soapui
+#     - name: chrome
+#     - name: notepad-plus-plus
+#     - name: atom
+#     - name: kitematic
+#     - name: desktop-preferences
+#     - name: desktop-cleanup
+#     - name: wallpaper
+#
+#
+#  tasks:
+#    - name: Reboot ubuntu
+#      shell: sleep 2 && shutdown -r now
+#      async: 1
+#      poll: 0
+#      ignore_errors: true
+#      become: yes
