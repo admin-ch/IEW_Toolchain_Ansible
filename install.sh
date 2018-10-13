@@ -90,10 +90,10 @@ install_and_configure_ansible () {
     sudo apt-get install curl
 
     echo '###Installing configure ansible module ...'
-    mkdir -p /home/dev/.ansible/plugins/modules
+    mkdir -p  ~/.ansible/plugins/modules
 
     echo '###Installing gsetting on ansible module ...'
-    sudo curl https://raw.githubusercontent.com/jistr/ansible-gsetting/master/gsetting.py > /home/dev/.ansible/plugins/modules/gsetting
+    sudo curl https://raw.githubusercontent.com/jistr/ansible-gsetting/master/gsetting.py >  ~/.ansible/plugins/modules/gsetting
 }
 
 #Check if ansible exit
